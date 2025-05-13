@@ -1,0 +1,37 @@
+call insertfabricante("Asus");
+call insertfabricante("Lenovo");
+call insertfabricante("Hewlett-Packard");
+call insertfabricante("Samsung");
+call insertfabricante("Seagate");
+call insertfabricante("Crucial");
+call insertfabricante("Gigabyte");
+call insertfabricante("Huawei");
+call insertfabricante("Xiaomi");
+
+call insertProducto("Disco duro SATA3 1TB",86.99,5);
+call insertProducto("Memoria RAM DDR4 8GB",120,6);
+call insertProducto("Disco SSD 1 TB",150.99,4);
+call insertProducto("GeForce GTX 1050Ti",185,7);
+call insertProducto("GeForce GTX 1080 Xtreme",755,6);
+call insertProducto("Monitor 24 LED Full HD",202,1);
+call insertProducto("Monitor 27 LED Full HD",245.99,1);
+call insertProducto("Portátil Yoga 520",559,2);
+call insertProducto("Portátil Ideapd 320",444,2);
+call insertProducto("Impresora HP Deskjet 3720",59.99,3);
+call insertProducto("Impresora HP Laserjet Pro M26nw",180,3);
+
+select nombre from producto;
+select nombre,precio from producto;
+select * from producto;
+select nombre, precio, precio*0.894 from producto;
+select nombre as 'nombre de producto', precio*0.894 as euros, precio as dolares from producto;
+select UPPER(nombre), precio from producto;
+select LOWER(nombre), precio from producto;
+select  nombre, upper(substring(nombre, 1,2)) from fabricante;
+select nombre, round(precio) from producto;
+select nombre, truncate(precio,0) from producto;
+select codigo_fabricante from producto;
+select distinct codigo_fabricante  from producto;
+select nombre from fabricante order by codigo asc;
+select nombre from fabricante order by codigo desc;
+select nombre, precio from producto order by codigo asc ;
