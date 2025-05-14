@@ -20,6 +20,7 @@ call insertProducto("Portátil Ideapd 320",444,2);
 call insertProducto("Impresora HP Deskjet 3720",59.99,3);
 call insertProducto("Impresora HP Laserjet Pro M26nw",180,3);
 
+/*Consultas de una tabla*/
 select nombre from producto;
 select nombre,precio from producto;
 select * from producto;
@@ -34,4 +35,29 @@ select codigo_fabricante from producto;
 select distinct codigo_fabricante  from producto;
 select nombre from fabricante order by codigo asc;
 select nombre from fabricante order by codigo desc;
-select nombre, precio from producto order by codigo asc ;
+select nombre, precio from producto order by nombre asc;
+select nombre,precio from producto order by precio desc;
+select * from fabricante limit 5;
+select * from fabricante limit 3,3;
+select nombre,precio from producto order by precio asc limit 1;
+select nombre,precio from producto order by precio desc limit 1;
+select nombre from producto where codigo_fabricante=2;
+select nombre from producto where precio*0.894 <= 120;
+select nombre from producto where precio*0.894 >= 400;
+select nombre from producto where precio*0.894 < 400;
+select nombre, precio*0.894 as 'precio en euros' from producto where precio*0.894 >= 80 and precio*0.894<= 300;
+select nombre, precio*0.894 as 'precio en euros' from producto where precio*0.894 between 60 and 200;
+select nombre,precio*0.894 as 'precio en euros' from producto where precio*0.894>=200 and  codigo_fabricante=6;
+select nombre from producto where codigo=1 or codigo=3 or codigo=5;
+select nombre from producto where codigo in (1,3,5);
+select nombre, precio*100 as centimos from producto;
+select nombre from fabricante where nombre like'S%';
+select nombre from fabricante where nombre like'%e';
+select nombre from fabricante where nombre like'%w%';
+select nombre from fabricante where nombre like'____';
+select nombre from producto where nombre like'%Portatil%';
+select nombre from producto where nombre like'%Monitor%' and precio*0.894<215;
+select precio*0.894 as 'precio en euros', nombre from producto where precio*0.894>=180 order by precio desc;
+select precio*0.894 as 'precio en euros', nombre from producto where precio*0.894>=180 order by nombre asc;
+
+/*1.1.4 Consultas multitabla (Composición interna)*/
