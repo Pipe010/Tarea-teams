@@ -1,5 +1,5 @@
 drop database if exists comercio;
-create database  comercio;
+create database comercio;
 use comercio;
 Create table producto(
 	codigo int(10) auto_increment,

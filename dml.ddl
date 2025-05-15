@@ -115,7 +115,7 @@ call insertProducto("Impresora HP Laserjet Pro M26nw",180,3);
 	
 
 
-/* 3. Dependiendo si el campo tiene not null no se puede pero si no si se puede agregar */
+/* 3. Dependiendo si el campo tiene not null no se puede pero si no si se puede agregar  */
 
 
 
