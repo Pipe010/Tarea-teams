@@ -117,11 +117,72 @@ call insertProducto("Impresora HP Laserjet Pro M26nw",180,3);
 
 /* 3. Dependiendo si el campo tiene not null no se puede pero si no si se puede agregar  */
 
+/*1.1.6 Consultas resumen*/
+/*1*/SELECT COUNT(*) AS 'Cantidad de productos' FROM producto;
+/*2*/SELECT COUNT(*) AS 'Cantidad de fabricantes' FROM fabricante;
+/*3*/SELECT COUNT(DISTINCT codigo_fabricante) FROM producto;
+/*4*/SELECT AVG(precio) AS Promedio FROM producto;
+/*5*/SELECT MIN(precio) AS Precio FROM producto; 
+/*6*/SELECT MAX(precio) AS Precio FROM producto;
+/*7*/SELECT nombre, precio AS Precio FROM producto WHERE precio = (SELECT MIN(precio) FROM producto);
+/*8*/SELECT nombre, precio AS Precio FROM producto WHERE precio = (SELECT MAX(precio) FROM producto);
+/*9*/SELECT SUM(precio) AS 'Suma total' FROM producto;
+/*10*/SELECT COUNT(*) AS 'Productos Asus'FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE f.nombre = 'Asus';
+/*11*/SELECT AVG(p.precio) AS 'Promedio de precio Asus'FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE f.nombre = 'Asus';
+/*12*/SELECT MIN(p.precio) AS 'Precio mas barato Asus'FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE f.nombre = 'Asus';
+/*13*/SELECT MAX(p.precio) AS 'Precio mas caro Asus'FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE f.nombre = 'Asus';
+/*14*/SELECT SUM(p.precio) AS 'Suma precios Asus'FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE f.nombre = 'Asus';
+/*15*/SELECT MAX(p.precio) AS Máximo, MIN(p.precio) AS Mínimo, AVG(p.precio) AS Promedio, COUNT(*) AS 'Cantidad de Productos'  
+FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo WHERE f.nombre = 'Crucial';
+/*16*/SELECT f.nombre AS 'Fabricante', COUNT(p.codigo_fabricante) AS 'Cantidad de productos' FROM producto as p RIGHT JOIN fabricante as f 
+ON p.codigo_fabricante = f.codigo GROUP BY f.nombre ORDER BY 'Cantidad de productos' DESC;
+/*17*/SELECT f.nombre AS 'Fabricante', MAX(p.precio)AS Máximo, MIN(p.precio) AS Mínimo, AVG(p.precio) AS Promedio
+FROM producto as p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo GROUP BY f.nombre;
+/*18*/SELECT f.codigo AS 'Código Fabricante', MAX(p.precio) AS Máximo, MIN(p.precio) AS Mínimo, AVG(p.precio) AS 'Promedio', COUNT(p.codigo_fabricante) 
+AS 'Cantidad'FROM producto p RIGHT JOIN fabricante f ON p.codigo_fabricante = f.codigo GROUP BY f.codigo HAVING Promedio*0.894 > 200;
+/*19*/SELECT f.nombre, MAX(p.precio) AS Máximo, MIN(p.precio) AS Mínimo, AVG(p.precio) AS Promedio, COUNT(p.codigo_fabricante) AS Cantidad
+FROM producto as p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo GROUP BY f.codigo HAVING Promedio*0.894 > 200;
+/*20*/SELECT COUNT(*) AS 'Cantidad de productos con Precio igual o mayor a 180 euros' FROM producto as p RIGHT JOIN fabricante as f 
+ON p.codigo_fabricante = f.codigo WHERE p.precio*0.894 > 180;
+/*21*/SELECT f.nombre, COUNT(p.nombre) AS 'Cantidad' FROM producto as p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+WHERE p.precio*0.894 >= 180 GROUP BY f.nombre;
+/*22*/SELECT f.codigo, AVG(p.precio) AS 'Promedio' FROM producto as  p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+GROUP BY  f.codigo;
+/*23*/SELECT f.nombre, AVG(p.precio) AS 'Promedio'FROM producto as p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+GROUP BY f.nombre;
+/*24*/SELECT f.nombre, AVG(p.precio) AS 'Promedio' FROM producto as p RIGHT JOIN fabricante as f ON p.codigo_fabricante = f.codigo 
+GROUP BY f.nombre HAVING Promedio*0.894 >= 150;
+/*25*/SELECT f.nombre FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+GROUP BY f.nombre HAVING COUNT(p.codigo_fabricante) >= 2;
+/*26*/SELECT f.nombre, COUNT(p.codigo_fabricante) AS 'Cantidad' FROM producto p INNER JOIN fabricante f ON p.codigo_fabricante = f.codigo
+WHERE p.precio*0.894 >= 220 GROUP BY f.nombre;
+/*27*/SELECT f.nombre, COUNT(CASE WHEN p.precio*0.894 >= 220 THEN f.nombre ELSE NULL END) AS 'Cantidad' FROM fabricante as f
+LEFT JOIN producto as p ON p.codigo_fabricante = f.codigo GROUP BY f.nombre;
+/*28*/SELECT f.nombre, SUM(p.precio*0.894) AS 'Suma' FROM producto as p INNER JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+GROUP BY f.nombre HAVING Suma > 1000;
+/*29*/SELECT p.nombre, p.precio AS 'Producto mas caro', f.nombre FROM producto as p JOIN fabricante as f ON p.codigo_fabricante = f.codigo
+LEFT JOIN producto as p2 ON p.codigo_fabricante = p2.codigo_fabricante AND p2.precio > p.precio WHERE p2.codigo IS NULL
+ORDER BY f.nombre ASC;
 
-
-
-
-
+/*1.1.7 Subconsultas (En la cláusula WHERE)*/
+/*1.1.7.1 Con operadores básicos de comparación*/
+/*1*/SELECT p.nombre FROM producto p WHERE p.codigo_fabricante = (SELECT f.codigo FROM fabricante f WHERE f.nombre = 'Lenovo');
+/*2*/SELECT * FROM producto as p WHERE p.precio = (SELECT MAX(p.precio) FROM fabricante as f, producto as p WHERE f.codigo = p.codigo_fabricante
+AND f.nombre = 'Lenovo');
+/*3*/SELECT nombre FROM producto as p WHERE p.precio = (SELECT MAX(p.precio) FROM fabricante as f, producto as p WHERE p.codigo_fabricante = f.codigo
+AND f.nombre= 'Lenovo');
+/*4*/SELECT nombre FROM producto as p WHERE p.precio = (SELECT MIN(p.precio) FROM fabricante as f, producto as p  WHERE f.codigo = p.codigo_fabricante 
+AND f.nombre = 'Hewlett-Packard');
+/*5*/SELECT nombre
+FROM producto as p WHERE p.precio >= (SELECT MAX(p.precio) FROM fabricante as f, producto as p WHERE p.codigo_fabricante = f.codigo 
+AND f.nombre= 'Lenovo');
+/*6*/SELECT nombre FROM producto as p WHERE p.precio > (SELECT AVG(p.precio) FROM fabricante as f, producto as p WHERE p.codigo_fabricante = f.codigo
+AND f.nombre= 'Asus');
 
 
 
